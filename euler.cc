@@ -1,21 +1,19 @@
 // hello.cc
 #include <node.h>
 
-namespace demo {
+#include <cmath>
 
-  #include <math.h>
+namespace demo {
 
   double
   reverseNumberInBase(double number, double base) {
     double reversed;
     for (reversed = 0; number > 0; number = (unsigned)(number / base) >> 0) {
-      reversed = reversed * base + fmod(number, base);
+      reversed = reversed * base + (unsigned)number % (unsigned)base;
     }
 
     return reversed;
   }
-
-  #include <stdbool.h>
 
   bool
   testWithNumber(double number, double base) {
@@ -58,7 +56,7 @@ void DoubleBasePalindromeSum(const FunctionCallbackInfo<Value>& args) {
 
   // Check the argument types
   for (unsigned i = 0; i < 3; i++) {
-    if (!args[i]->IsNumber()) {
+    if (!args[i]->IsUint32()) {
       isolate->ThrowException(Exception::TypeError(
           String::NewFromUtf8(isolate, "Wrong arguments")));
       return;

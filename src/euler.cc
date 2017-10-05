@@ -3,29 +3,32 @@
 
 #include <cmath>
 
-namespace demo {
+namespace euler {
 
+  static
   double
-  reverseNumberInBase(double number, double base) {
-    double reversed;
-    for (reversed = 0; number > 0; number = (unsigned)(number / base) >> 0) {
-      reversed = reversed * base + (unsigned)number % (unsigned)base;
+  reverseNumberInBase(unsigned number, unsigned base) {
+    unsigned reversed;
+    for (reversed = 0; number > 0; number = (number / base) >> 0) {
+      reversed = reversed * base + number % base;
     }
 
     return reversed;
   }
 
+  static
   bool
-  testWithNumber(double number, double base) {
+  testWithNumber(unsigned number, unsigned base) {
     return number == reverseNumberInBase(number, base);
   }
 
-  double
+  static
+  unsigned
   doubleBasePalindromeSum(unsigned base1,
       unsigned base2,
       unsigned upperLimit) {
 
-    double sum = 0;
+    unsigned sum = 0;
     for (unsigned i = 0; i < upperLimit; i++) {
       if (testWithNumber(i, base1) && testWithNumber(i, base2)) {
         sum += i;
@@ -63,10 +66,10 @@ void DoubleBasePalindromeSum(const FunctionCallbackInfo<Value>& args) {
     }
   }
   // Perform the operation
-  double base1 = args[0]->NumberValue();
-  double base2 = args[1]->NumberValue();
-  double limit = args[2]->NumberValue();
-  double value = doubleBasePalindromeSum(base1, base2, limit);
+  unsigned base1 = args[0]->NumberValue();
+  unsigned base2 = args[1]->NumberValue();
+  unsigned limit = args[2]->NumberValue();
+  unsigned value = doubleBasePalindromeSum(base1, base2, limit);
   Local<Number> num = Number::New(isolate, value);
 
   // Set the return value (using the passed in
@@ -80,4 +83,4 @@ void init(Local<Object> exports) {
 
 NODE_MODULE(euler, init)
 
-}  // namespace demo
+}  // namespace euler
